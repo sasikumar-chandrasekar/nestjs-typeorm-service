@@ -49,7 +49,6 @@ export class UsersService {
     try {
       this.logger.debug('Fetching all users from database');
       const users = await this.usersRepository.find();
-      this.logger.debug(`Found ${users.length} users`);
       return users;
     } catch (error) {
       this.logger.error(`Error fetching users: ${error.message}`, error.stack);

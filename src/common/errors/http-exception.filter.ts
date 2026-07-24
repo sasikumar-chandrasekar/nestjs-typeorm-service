@@ -32,7 +32,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       details = exception.details;
       this.logger.warn(
         `${request.method} ${request.url} - ${errorCode}: ${message}`,
-        exception.stack,
       );
     } else if (exception instanceof HttpException) {
       // Handle NestJS HTTP exceptions
@@ -51,7 +50,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       
       this.logger.warn(
         `${request.method} ${request.url} - ${status}: ${message}`,
-        exception.stack,
       );
     } else {
       // Handle unexpected errors

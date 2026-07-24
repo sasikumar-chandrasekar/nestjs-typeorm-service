@@ -2,13 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, Logger } from '@nestjs/common';
-import { WinstonModule } from 'nest-winston';
-import { winstonConfig } from './common/logger/winston.config';
 
 async function bootstrap() {
-  const logger = WinstonModule.createLogger(winstonConfig);
+  const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule, {
-    logger,
+    logger: ['error', 'warn', 'log'],
   });
 
   app.useGlobalPipes(new ValidationPipe({
@@ -16,19 +14,6 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true,
   }));
-
-  // Request logging middleware
-  app.use((req, res, next) => {
-    const start = Date.now();
-    res.on('finish', () => {
-      const duration = Date.now() - start;
-      logger.log(
-        `${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`,
-        'HTTP',
-      );
-    });
-    next();
-  });
 
   const config = new DocumentBuilder()
     .setTitle('NestJS TypeORM Service API')
@@ -42,6 +27,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-  logger.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`, 'Bootstrap');
+  logger.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
+  logger.log(`Swagger documentation available at: http://localhost:${process.env.PORT ?? 3000}/api`);
 }
 bootstrap();

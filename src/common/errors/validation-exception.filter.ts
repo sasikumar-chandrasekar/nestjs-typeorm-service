@@ -23,7 +23,6 @@ export class ValidationExceptionFilter implements ExceptionFilter {
       
       this.logger.warn(
         `Validation failed for ${request.method} ${request.url}`,
-        JSON.stringify(validationErrors),
       );
 
       response.status(400).json({

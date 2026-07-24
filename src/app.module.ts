@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { LoggerModule } from './common/logger/logger.module';
 import { ErrorsModule } from './common/errors/errors.module';
 
 @Module({
@@ -22,7 +21,6 @@ import { ErrorsModule } from './common/errors/errors.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    LoggerModule,
     ErrorsModule,
     UsersModule,
   ],
